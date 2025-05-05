@@ -1,1 +1,32 @@
 
+name: Build Projeto Pico
+
+on:
+  push:
+    branches: [ master, develop ]
+  pull_request:
+    branches: [ master, develop ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout código
+      uses: actions/checkout@v3
+
+    - name: Instalar dependências
+      run: |
+        sudo apt update
+        sudo apt install -y cmake gcc-arm-none-eabi build-essential
+
+    - name: Criar diretório build
+      run: mkdir -p build
+
+    - name: Rodar CMake
+      working-directory: ./build
+      run: cmake ..
+
+    - name: Compilar projeto
+      working-directory: ./build
+      run: make
